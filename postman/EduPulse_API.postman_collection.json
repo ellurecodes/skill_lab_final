@@ -1,0 +1,221 @@
+{
+  "info": {
+    "_postman_id": "a91b48b0-4f51-4172-8788-edupulse001",
+    "name": "EduPulse REST API Collection",
+    "description": "Comprehensive Postman test collection for EduPulse Full Stack Development Capstone. Covers Health, Auth, Tasks CRUD, Placement Drives, and Stats.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01. System Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Authentication",
+      "item": [
+        {
+          "name": "Demo Login (Student)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set('token', jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"student\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/demo-login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "demo-login"]
+            }
+          }
+        },
+        {
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"vishal797577@gmail.com\",\n  \"password\": \"student123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Vishal Ellure\",\n  \"cgpa\": 9.35,\n  \"bio\": \"Updated bio via Postman API\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Academic Tasks CRUD",
+      "item": [
+        {
+          "name": "Get All Tasks",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/tasks",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman API Test Task\",\n  \"category\": \"Lab Experiment\",\n  \"priority\": \"High\",\n  \"dueDate\": \"2026-11-01\",\n  \"subject\": \"Full Stack Development\",\n  \"notes\": \"Verified through Postman collection\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tasks",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "Filter Tasks by Status",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/tasks?status=Pending",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks"],
+              "query": [{ "key": "status", "value": "Pending" }]
+            }
+          }
+        },
+        {
+          "name": "Bulk Sync from LocalStorage",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tasks\": [\n    {\n      \"title\": \"Offline Task 1\",\n      \"category\": \"Assignment\",\n      \"priority\": \"Low\",\n      \"dueDate\": \"2026-11-05\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tasks/bulk-sync",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks", "bulk-sync"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Placement Drives & Applications",
+      "item": [
+        {
+          "name": "Get All Placement Drives",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/placements",
+              "host": ["{{base_url}}"],
+              "path": ["api", "placements"]
+            }
+          }
+        },
+        {
+          "name": "Get My Applications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/placements/my/applications",
+              "host": ["{{base_url}}"],
+              "path": ["api", "placements", "my", "applications"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Dashboard Analytics",
+      "item": [
+        {
+          "name": "Get Aggregated Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/stats/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["api", "stats", "dashboard"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
